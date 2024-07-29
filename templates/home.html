@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .center {
+            display: grid;
+            justify-content: center;
+            padding-top: 5%;
+            padding-bottom: 15%;
+        }
+        .large-text {
+            font-size: 2.0rem;
+        }
+        .med-text {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="generate" class="center large-text">
+    <div>
+        <img src="/static/pen-writing-on-check.png" alt="pen" width="200" height="200">
+    </div>
+    <div><hr></div>
+    <form action="./new-otp">
+        <button type="submit" class="med-text">Generate New OTP Code</button><br>
+        {{ message }}
+    </form>
+    <div><hr></div>
+    <form action="./verify-otp" method="post">
+        <input type="text" id="otp" name="otp" placeholder="Enter OTP Code" class="med-text" >
+        <button type="submit" class="med-text">Verify OTP Code</button>
+    </form>
+</div>
+</body>
+</html>

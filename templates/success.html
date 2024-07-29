@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+    <style>
+        .center {
+            display: grid;
+            justify-content: center;
+            padding-top: 5%;
+            padding-bottom: 25%;
+        }
+        .large-text {
+            font-size: 2.0rem;
+        }
+        .med-text {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="center large-text">
+    <div>
+        <img src="/static/person-at-printer.png" alt="pen" width="200" height="200">
+    </div>
+    <div><hr></div>
+    <div>Success! OTP has been verified.<br></div>
+    <div><hr></div>
+    <div>Print Signature on checks:</div>
+
+    <form action="./print-signature" method="post">
+        <input type="hidden" id="otp" name="otp" value="{{otp}}">
+        <span>Quantity:
+        <input type="number" id="quantity" name="quantity" placeholder="Enter Quantity" class="med-text">
+        </span>
+        <br>
+        <button type="submit" class="med-text">Print</button>
+            <div>{{ message }}</div>
+    </form>
+    <div>&nbsp;</div>
+    <div>&nbsp;</div>
+    <div>
+    <form action="/" method="get">
+        <div><button type="submit" class="med-text">Exit</button>
+    </form>
+    </div>
+</div>
+
+</body>
+</html>
