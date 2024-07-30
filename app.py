@@ -70,7 +70,7 @@ def print_signature():
             if int(quantity) > 0:
                 pdf = PDFPrinter(qty=quantity)
                 pdf.print()
-                msg = f'Printing signature x {quantity} ... in progress'
+                msg = f'Printing signature x {quantity} ... confirm with staff.'
             else:
                 msg = 'Please enter a quantity >= 1'
         else:
