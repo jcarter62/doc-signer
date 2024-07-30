@@ -13,11 +13,18 @@ class OTP:
             self.file_path = os.getenv('OTP_FILE')
             # check to see if the file exists, if not create it
             if not os.path.exists(self.file_path):
+                # create the file
+                with open(self.file_path, 'w') as file:
+                    self.otp = '00000'
+                    file.write(self.otp)
+                # generate a new OTP
+                self.generate_otp()
                 self.save_to_file()
 
-            self.otp = self.get_otp()
+#            self.otp = self.get_otp()
         except :
-            self.otp = ''
+            pass
+#            self.otp = ''
 
 
     def save_to_file(self):
@@ -31,6 +38,9 @@ class OTP:
         if self.file_path:
             with open(self.file_path, 'r') as file:
                 self.otp = file.read().strip()
+            # if self.otp == '' or self.otp is None then generate a new OTP
+            if self.otp == '' or self.otp is None:
+                self.generate_otp()
             return self.otp
         else:
             raise ValueError("OTP_FILE path is not set in the environment variables")
