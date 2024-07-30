@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, send_from_directory
 import jinja2
 from totp import OTP
 from pdfprinter import PDFPrinter
 from emailsender import EmailSender
 from otphash import OTPHasher
 import logging
+import os
 
 
 app = Flask(__name__)
@@ -17,6 +18,11 @@ def home_route():  # put application's code here
     otpvalue = otp.get_otp()
     hotp = OTPHasher().hash_otp(otpvalue)
     return render_template('home.html', otp=hotp, message='')
+
+@app.route('/favicon.ico')
+def favicon():
+    logging.info('Favicon route accessed')
+    return send_from_directory( os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/new-otp')
 def new_otp():
