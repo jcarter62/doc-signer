@@ -17,6 +17,12 @@
             font-size: 1.5rem;
         }
     </style>
+    <script>
+        function handlePrintButtonClick() {
+            document.getElementById('print_btn').disabled = true;
+            document.getElementById('msg').innerText = 'hold on, working on it';
+        }
+    </script>
 </head>
 <body>
 
@@ -29,14 +35,14 @@
     <div><hr></div>
     <div>Print Signature on checks:</div>
 
-    <form action="./print-signature" method="post">
+    <form action="./print-signature" method="post" onsubmit="handlePrintButtonClick()">
         <input type="hidden" id="otp" name="otp" value="{{otp}}">
         <span>Quantity:
         <input type="number" id="quantity" name="quantity" placeholder="Enter Quantity" class="med-text">
         </span>
         <br>
-        <button type="submit" class="med-text">Print</button>
-            <div>{{ message }}</div>
+        <button type="submit" class="med-text" id="print_btn">Print</button>
+            <div id="msg">{{ message }}</div>
     </form>
     <div>&nbsp;</div>
     <div>&nbsp;</div>
