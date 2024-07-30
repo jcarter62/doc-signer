@@ -1,19 +1,25 @@
-# OTP Verification and Signature Printing Application
+# Doc Signer, OTP Verification and Signature Printing Application
 
-This application provides OTP (One-Time Password) generation and verification, along with a feature to print signatures on checks. It is built using Flask and includes logging for important events.
+This application provides a way for a user to send a predefined PDF to a predefined printer, 
+using OTP (One-Time Password) generation and verification.  One use of this application
+is to send a predefined signature to a printer, allowing the user to effectively "sign checks" by
+printing the signature over the top of printed checks.  
+
+It is built using Flask and includes logging for important events.
 
 ## Prerequisites
 
-- Python 3.6+
+- Python 3.11+
 - pip (Python package installer)
 - Virtual environment (optional but recommended)
+- [PDF to Printer](https://mendelson.org/pdftoprinter.html) (or any other PDF to Printer software)
 
 ## Installation
 
 1. **Clone the repository:**
 
     ```sh
-    git clone <repository-url>
+    git clone https://github.com/jcarter62/doc-signer.git
     cd <repository-directory>
     ```
 
@@ -35,8 +41,17 @@ This application provides OTP (One-Time Password) generation and verification, a
     Create a `.env` file in the root directory of the project and add the following variables:
 
     ```env
-    HOST=0.0.0.0
-    PORT=5000
+   PRINTER_EXE=c:\...\PDFtoPrinter.exe
+   PRINTER1=hpprinter
+   NAME=Jim User
+   EMAIL=jcarter62@gmail.com
+   PDFFILE=c:\temp\one-page.pdf
+   OTP_FILE=c:\temp\otp.txt
+   EMAIL_SERVER=192.168.1.100
+   EMAIL_PORT=25
+   EMAIL_FROM=user@go.com
+   HOST=0.0.0.0
+   PORT=5000
     ```
 
 ## Configuration
