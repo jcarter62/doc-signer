@@ -27,3 +27,10 @@ class PDFPrinter:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+
+    def print_async(self):
+        self._create_command()
+        try:
+            subprocess.Popen(self._cmdline, shell=True)
+        except Exception as e:
+            print(f"An error occurred: {e}")
