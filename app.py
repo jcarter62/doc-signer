@@ -7,13 +7,38 @@ from otphash import OTPHasher
 import logging
 import os
 
+sep = ' | '
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(message)s')
 
 app = Flask(__name__)
 
 
+def format_log_entry():
+    # def format_log_entry():
+    #     user_agent = request.headers.get('User-Agent')
+    #     return f'{request.remote_addr} - - [{request.date}] "{request.method} {request.path} {request.scheme}/{request.environ.get("SERVER_PROTOCOL")}" {request.status_code} {request.content_length} "{user_agent}"'
+    user_agent = request.headers.get('User-Agent')
+
+    if 'HTTP_CF_CONNECTING_IP' not in request.headers.environ:
+        remote_ip = request.remote_addr
+    else:
+        remote_ip = request.headers.environ['HTTP_CF_CONNECTING_IP']
+
+    msg = f'{remote_ip}{sep}[{request.date}] {request.method} '
+    msg = msg + f'{request.scheme}:{request.path} {sep}'
+    msg = msg + user_agent
+    return msg
+
+
+@app.before_request
+def log_request_info():
+    logging.info(format_log_entry())
+
+
 @app.route('/')
 def home_route():  # put application's code here
-    logging.info('Home route accessed')
     otp = OTP()
     otpvalue = otp.get_otp()
     hotp = OTPHasher().hash_otp(otpvalue)
@@ -21,12 +46,10 @@ def home_route():  # put application's code here
 
 @app.route('/favicon.ico')
 def favicon():
-    logging.info('Favicon route accessed')
     return send_from_directory( os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/new-otp')
 def new_otp():
-    logging.info('New OTP route accessed')
     otp = OTP()
     otp.generate_otp()
     otpvalue = otp.get_otp()
@@ -39,7 +62,6 @@ def new_otp():
 
 @app.route('/verify-otp', methods=['POST'])
 def verify_otp():
-    logging.info('Verify OTP route accessed')
     # get the otp from the form
     entered_otp = request.form['otp']
     entered_hotp = OTPHasher().hash_otp(entered_otp)
@@ -55,7 +77,6 @@ def verify_otp():
 
 @app.route('/print-signature', methods=['POST'])
 def print_signature():
-    logging.info('Print signature route accessed')
     # get the otp from the form, which is already hashed.
     entered_hotp = request.form['otp']
 
