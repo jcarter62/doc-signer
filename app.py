@@ -16,6 +16,10 @@ app = Flask(__name__)
 
 
 def format_log_entry():
+    '''
+    Format the log entry with the remote IP, date, method, path, scheme, status code, content length and user agent.
+    :return: log entry text
+    '''
     # def format_log_entry():
     #     user_agent = request.headers.get('User-Agent')
     #     return f'{request.remote_addr} - - [{request.date}] "{request.method} {request.path} {request.scheme}/{request.environ.get("SERVER_PROTOCOL")}" {request.status_code} {request.content_length} "{user_agent}"'
@@ -34,11 +38,19 @@ def format_log_entry():
 
 @app.before_request
 def log_request_info():
+    '''
+    Log the request information before processing the request.
+    :return:
+    '''
     logging.info(format_log_entry())
 
 
 @app.route('/')
 def home_route():  # put application's code here
+    '''
+    Home route to display home page with a few buttons.
+    :return:
+    '''
     otp = OTP()
     otpvalue = otp.get_otp()
     hotp = OTPHasher().hash_otp(otpvalue)
@@ -50,6 +62,12 @@ def favicon():
 
 @app.route('/new-otp')
 def new_otp():
+    '''
+    Generate a new OTP and send it to the user's email.
+    Display home page with a message suggesting the user to check their email,
+    also send the hashed OTP to the home page for use to verify the entered OTP.
+    :return:
+    '''
     otp = OTP()
     otp.generate_otp()
     otpvalue = otp.get_otp()
@@ -62,6 +80,11 @@ def new_otp():
 
 @app.route('/verify-otp', methods=['POST'])
 def verify_otp():
+    '''
+    Verify the OTP entered by the user.
+    If the OTP is correct, display the success page.
+    :return:
+    '''
     # get the otp from the form
     entered_otp = request.form['otp']
     entered_hotp = OTPHasher().hash_otp(entered_otp)
@@ -69,14 +92,18 @@ def verify_otp():
     otpvalue = otp.get_otp()
     hotp = OTPHasher().hash_otp(otpvalue)
 
-
     if entered_hotp == hotp:
+        # remove old output files
         return render_template('success.html', otp=hotp, message='')
     else:
         return redirect('/')
 
 @app.route('/print-signature', methods=['POST'])
 def print_signature():
+    '''
+    Print the signature based on the quantity entered by the user
+    if the OTP matches the current OTP saved in the file.
+    '''
     # get the otp from the form, which is already hashed.
     entered_hotp = request.form['otp']
 
